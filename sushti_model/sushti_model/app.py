@@ -10,7 +10,10 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Electricity Saving Assistant", page_icon="⚡", layout="centered")
 
 # Load model and encoders
-model = joblib.load("model.pkl")
+# model = joblib.load("model.pkl")
+import os
+model = joblib.load(os.path.join(os.path.dirname("C:\Users\shiva\Downloads\sushti_model\sushti_model\model.pkl"), "model.pkl"))
+
 mlb = joblib.load("appliance_encoder.pkl")
 
 # Load appliance tips
