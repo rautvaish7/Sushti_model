@@ -11,8 +11,8 @@ import os
 st.set_page_config(page_title="Electricity Saving Assistant", page_icon="⚡", layout="centered")
 
 # Load model and encoders
-# model = joblib.load("model.pkl")
-model = joblib.load(os.path.join(os.path.dirname("model.pkl"), "model.pkl"))
+model = joblib.load("model.pkl")
+# model = joblib.load(os.path.join(os.path.dirname("model.pkl"), "model.pkl"))
 
 mlb = joblib.load("appliance_encoder.pkl")
 
