@@ -1,0 +1,53 @@
+{
+  "Tubelight": [
+    "Replace old tubelights with LED tube lights to save energy.",
+    "Clean tubelights regularly for maximum brightness."
+  ],
+  "Fan": [
+    "Use energy-efficient ceiling fans.",
+    "Turn off fans when not in use.",
+    "Clean fan blades regularly to maintain performance."
+  ],
+  "Bulb": [
+    "Switch to LED bulbs instead of incandescent or CFLs.",
+    "Use task lighting instead of lighting the whole room."
+  ],
+  "Air Conditioner": [
+    "Set AC to 24°C for optimal energy use.",
+    "Ensure windows and doors are shut while AC is running.",
+    "Clean AC filters every 2–4 weeks to improve efficiency."
+  ],
+  "Refrigerator": [
+    "Keep refrigerator away from heat sources.",
+    "Don't overload the fridge; allow air circulation.",
+    "Check the door seal for air leaks regularly."
+  ],
+  "Lighting": [
+    "Turn off unnecessary lighting during the day.",
+    "Maximize use of natural light.",
+    "Install motion sensors in rooms used infrequently."
+  ],
+  "Television": [
+    "Turn off the TV completely instead of standby mode.",
+    "Lower brightness and enable eco-mode."
+  ],
+  "Heater": [
+    "Use room heaters with thermostat controls.",
+    "Only use heaters in occupied rooms.",
+    "Seal windows/doors to retain heat efficiently."
+  ],
+  "Dishwasher": [
+    "Run the dishwasher only when full.",
+    "Use energy-saving or eco mode.",
+    "Skip pre-rinsing under running water."
+  ],
+  "Microwave": [
+    "Use the microwave instead of the oven for reheating.",
+    "Cover food to reduce heating time."
+  ],
+  "Washing Machine": [
+    "Wash clothes using cold water.",
+    "Avoid half-loads; wait for full loads.",
+    "Use short wash cycles and high-efficiency detergent."
+  ]
+}
