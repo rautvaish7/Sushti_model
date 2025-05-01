@@ -1,6 +1,5 @@
 streamlit
-pandas
 joblib
+pandas
 scikit-learn
-openpyxl
-matplotlib
+openpyxl   # since you're using an Excel file
