@@ -1,4 +1,3 @@
-# Electricity Saving Assistant with Extended Features
 import streamlit as st
 import pandas as pd
 import joblib
@@ -7,17 +6,19 @@ import random
 import matplotlib.pyplot as plt
 import os
 
-# Set page config at the top
+# Path helper
+BASE_DIR = os.path.dirname(__file__)
+
+# Set page config
 st.set_page_config(page_title="Electricity Saving Assistant", page_icon="⚡", layout="centered")
 
 # Load model and encoders
-model = joblib.load("D:/sushti_model/model.pkl")
-# model = joblib.load(os.path.join(os.path.dirname("model.pkl"), "model.pkl"))
-
-mlb = joblib.load("appliance_encoder.pkl")
+model = joblib.load(os.path.join(BASE_DIR, "model.pkl"))
+mlb = joblib.load(os.path.join(BASE_DIR, "appliance_encoder.pkl"))
 
 # Load appliance tips
-tips_db = json.load(open("tips.json"))
+with open(os.path.join(BASE_DIR, "tips.json"), 'r') as f:
+    tips_db = json.load(f)
 
 st.title("Electricity Saving Assistant ⚡")
 
@@ -28,14 +29,14 @@ units = st.slider("Select your monthly electricity consumption (kWh):", 0, 2000,
 appliances_list = list(tips_db.keys())
 selected_appliances = st.multiselect("Select the appliances you use:", appliances_list)
 
-# Feature 1: Daily usage per appliance
+# Daily usage per appliance
 usage_times = {}
 if selected_appliances:
     st.subheader("🕒 Daily Usage Time per Appliance")
     for appliance in selected_appliances:
         usage_times[appliance] = st.slider(f"{appliance} (hours/day)", 0, 24, 1)
 
-# Feature 2: Upload past bills
+# Upload past bills
 st.subheader("📂 Upload Past Monthly Bills (Optional)")
 bill_df = None
 uploaded_file = st.file_uploader("Upload your past monthly electricity bills (CSV with 'Month' and 'Units' columns):", type=["csv"])
@@ -53,7 +54,7 @@ if st.button("Get Energy Saving Tips"):
         user_input = mlb.transform([selected_appliances])
         user_df = pd.DataFrame(user_input, columns=mlb.classes_)
 
-        # Only keep columns that model expects
+        # Align features
         model_features = model.n_features_in_ if hasattr(model, 'n_features_in_') else model._fit_X.shape[1]
         if user_df.shape[1] + 1 > model_features:
             user_df = user_df.iloc[:, :model_features - 1]
@@ -66,7 +67,7 @@ if st.button("Get Energy Saving Tips"):
             st.stop()
 
         # Load dataset
-        df = pd.read_excel("EVS Dataset.xlsx", sheet_name="Sheet1")
+        df = pd.read_excel(os.path.join(BASE_DIR, "EVS Dataset.xlsx"), sheet_name="Sheet1")
         df["Appliances"] = df["Appliances"].apply(lambda x: [a.strip() for a in str(x).split(",")])
 
         st.subheader("💡 Recommended Tips:")
@@ -83,7 +84,7 @@ if st.button("Get Energy Saving Tips"):
                         st.markdown(f"- **{appliance}**: {tips}")
                     shown.add(appliance)
 
-        # Feature 3: Smart Suggestion based on ML (basic logic)
+        # Smart Suggestion
         st.subheader("🤖 Smart Suggestion")
         if "Monthly_Consumption_kWh" in df.columns:
             high_consumers = df[df['Monthly_Consumption_kWh'] > units]
@@ -92,7 +93,7 @@ if st.button("Get Energy Saving Tips"):
                 for app in common.index:
                     st.info(f"Consider reducing usage of: **{app}**")
 
-        # Bill simulation
+        # Estimated Monthly Bill & Savings
         st.subheader("📉 Estimated Monthly Bill & Savings")
         base_bill = units * 8
         saving_percent = sum(random.randint(10, 30) for _ in selected_appliances) / (len(selected_appliances) or 1)
@@ -100,14 +101,14 @@ if st.button("Get Energy Saving Tips"):
         new_units = units - saved_units
         new_bill = new_units * 8
 
-        st.markdown(f"**Original Units**: {units} kWh  ")
-        st.markdown(f"**Estimated Savings**: {int(saved_units)} kWh (~{int(saving_percent)}%)  ")
-        st.markdown(f"**New Estimated Units**: {int(new_units)} kWh  ")
-        st.markdown(f"**Original Bill**: ₹{int(base_bill)}  ")
-        st.markdown(f"**New Estimated Bill**: ₹{int(new_bill)}  ")
+        st.markdown(f"**Original Units**: {units} kWh")
+        st.markdown(f"**Estimated Savings**: {int(saved_units)} kWh (~{int(saving_percent)}%)")
+        st.markdown(f"**New Estimated Units**: {int(new_units)} kWh")
+        st.markdown(f"**Original Bill**: ₹{int(base_bill)}")
+        st.markdown(f"**New Estimated Bill**: ₹{int(new_bill)}")
         st.markdown(f"**💰 You Save**: ₹{int(base_bill - new_bill)}")
 
-        # Feature 4: Bar chart with usage time factor
+        # Appliance Usage Distribution
         st.subheader("📊 Appliance Usage Distribution")
         usage_kwh = []
         total_hours = sum(usage_times.values()) or 1
